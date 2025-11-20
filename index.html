@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Shelf Tactics - Launching Soon</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        --bg: #050816;
+        --card: rgba(15, 23, 42, 0.92);
+        --accent: #38bdf8;
+        --accent-soft: rgba(56, 189, 248, 0.12);
+        --text-main: #e5e7eb;
+        --text-muted: #9ca3af;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background:
+          radial-gradient(circle at top left, #1f2937 0, transparent 50%),
+          radial-gradient(circle at bottom right, #0f172a 0, transparent 55%),
+          var(--bg);
+        color: var(--text-main);
+      }
+
+      .glow-orbit {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.18), transparent 55%),
+          radial-gradient(circle at 80% 80%, rgba(56, 189, 248, 0.18), transparent 55%);
+        opacity: 0.9;
+        mix-blend-mode: screen;
+      }
+
+      .shell {
+        position: relative;
+        z-index: 1;
+        padding: 24px;
+        width: 100%;
+        max-width: 960px;
+      }
+
+      .card {
+        position: relative;
+        border-radius: 24px;
+        padding: 32px 26px;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.94));
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        box-shadow:
+          0 32px 80px rgba(15, 23, 42, 0.75),
+          0 0 0 1px rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(18px);
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 28px;
+      }
+
+      @media (max-width: 768px) {
+        .card {
+          grid-template-columns: 1fr;
+          padding: 24px 20px;
+        }
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 999px;
+        padding: 6px 12px;
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+
+      .pill-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: #22c55e;
+        box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
+      }
+
+      h1 {
+        margin: 18px 0 8px;
+        font-size: 38px;
+        line-height: 1.05;
+        letter-spacing: -0.04em;
+      }
+
+      .accent {
+        background: linear-gradient(120deg, #38bdf8, #a855f7);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .subtitle {
+        margin: 0 0 18px;
+        font-size: 16px;
+        color: var(--text-muted);
+        max-width: 460px;
+      }
+
+      .divider {
+        width: 48px;
+        height: 2px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #38bdf8, transparent);
+        margin: 18px 0 22px;
+      }
+
+      .list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 26px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .list li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        color: var(--text-main);
+      }
+
+      .list-bullet {
+        width: 18px;
+        height: 18px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        color: var(--accent);
+      }
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .cta-primary {
+        padding: 10px 20px;
+        border-radius: 999px;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: default;
+        background: linear-gradient(120deg, #38bdf8, #a855f7);
+        color: #0b1220;
+        box-shadow:
+          0 14px 35px rgba(56, 189, 248, 0.4),
+          0 0 0 1px rgba(15, 23, 42, 0.8);
+      }
+
+      .cta-secondary {
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+
+      .cta-secondary span {
+        color: var(--accent);
+      }
+
+      .meta {
+        margin-top: 22px;
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+
+      .meta span {
+        color: var(--accent);
+      }
+
+      .right {
+        border-radius: 20px;
+        padding: 16px 16px 14px;
+        background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.16), transparent 55%),
+          radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.18), transparent 50%),
+          var(--card);
+        border: 1px solid rgba(148, 163, 184, 0.26);
+      }
+
+      .right-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--text-muted);
+        margin-bottom: 8px;
+      }
+
+      .right-card {
+        border-radius: 14px;
+        padding: 14px;
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        margin-bottom: 8px;
+      }
+
+      .right-title {
+        font-size: 14px;
+        font-weight: 600;
+        margin: 0 0 4px;
+      }
+
+      .right-text {
+        font-size: 12px;
+        color: var(--text-muted);
+        margin: 0;
+      }
+
+      .right-tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 10px;
+      }
+
+      .tag {
+        font-size: 10px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        background: rgba(15, 23, 42, 0.9);
+        color: var(--text-muted);
+      }
+
+      .right-footer {
+        margin-top: 10px;
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="glow-orbit"></div>
+
+    <div class="shell">
+      <div class="card">
+        <div>
+          <div class="pill">
+            <span class="pill-dot"></span>
+            <span>Platform boot sequence in progress</span>
+          </div>
+
+          <h1>
+            Shelf Tactics
+            <span class="accent">is almost ready</span>
+          </h1>
+
+          <p class="subtitle">
+            We are wiring together ERP, inventory, and a two sided marketplace so local products
+            can move from maker shelves to retail aisles without friction.
+          </p>
+
+          <div class="divider"></div>
+
+          <ul class="list">
+            <li>
+              <span class="list-bullet">1</span>
+              <span>ERPNext stack is being deployed and tuned on Oracle Cloud.</span>
+            </li>
+            <li>
+              <span class="list-bullet">2</span>
+              <span>Maker and retailer portals are being connected to a single brain.</span>
+            </li>
+            <li>
+              <span class="list-bullet">3</span>
+              <span>Launch window will open as soon as the core is stable and verified.</span>
+            </li>
+          </ul>
+
+          <div class="cta-row">
+            <button class="cta-primary" type="button">
+              Coming Soon - Shelf Tactics
+            </button>
+            <div class="cta-secondary">
+              Built for local makers and smart retailers.
+              <span>Live access will open after internal testing.</span>
+            </div>
+          </div>
+
+          <div class="meta">
+            Backend status:
+            <span>ERPNext install and configuration in progress</span>.
+          </div>
+        </div>
+
+        <div class="right">
+          <div class="right-label">Preview of what is coming</div>
+
+          <div class="right-card">
+            <p class="right-title">Unified back office</p>
+            <p class="right-text">
+              A single control panel to track placements, shelf space, and payouts without
+              spreadsheets, screenshots, or guesswork.
+            </p>
+          </div>
+
+          <div class="right-card">
+            <p class="right-title">Local first, scale when ready</p>
+            <p class="right-text">
+              Start with a single neighborhood, then extend to more shops, more makers, and more
+              categories when the engine is proven.
+            </p>
+          </div>
+
+          <div class="right-tag-row">
+            <span class="tag">ERPNext powered</span>
+            <span class="tag">Oracle Cloud</span>
+            <span class="tag">Makers</span>
+            <span class="tag">Retailers</span>
+            <span class="tag">Shelf partnerships</span>
+          </div>
+
+          <div class="right-footer">
+            This page is a temporary landing surface while we finalize the secure production
+            environment behind it.
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
